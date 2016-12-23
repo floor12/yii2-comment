@@ -1,0 +1,66 @@
+div.comments-widget {
+
+  div.comments-header {
+    padding: 2px 0;
+  }
+
+  div.comments-comments {
+    display: none;
+
+    div.subcomment {
+      margin-left: 50px;
+      margin-top: 2px !important;
+
+    }
+
+    div.comment {
+      background-color: #f9f9f9;
+      padding: 10px;
+      margin-top: 20px;
+
+      div.comment-body {
+        min-height: 45px;
+
+        img.avatar {
+          max-width: 40px;
+          float: left;
+        }
+
+        div.comment-date {
+          font-size: 80%;
+          float: right;
+          color: #ccc;
+        }
+
+        div.comment-author {
+          font-weight: bold;
+          margin-left: 50px;
+        }
+
+        div.comment-content {
+          font-size: 90%;
+          margin-left: 50px;
+        }
+
+      }
+
+      div.comment-control {
+        height: 15px;
+        text-align: right;
+        opacity: 0;
+        transition: all 0.2s ease-out 0s;
+      }
+
+    }
+
+    div.comment:hover {
+      div.comment-control {
+        opacity: 1;
+      }
+    }
+
+  }
+
+}
+
+

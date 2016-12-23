@@ -12,28 +12,34 @@ use yii\db\Expression;
 class CommentsWidget extends \yii\base\Widget
 {
 
+    public $show = false;
     public $object_id;
     public $classname;
-    private $comments;
+    public $btn_class = "btn btn-default btn-xs";
+
+    private $class_hashed;
+    private $selector;
+
+    function init()
+    {
+        $this->class_hashed = Comment::prepereClassname($this->classname);
+        $this->selector = $this->class_hashed . "-" . $this->object_id;
+
+    }
 
 
     function run()
     {
+        $total = Comment::find()->where(['class' => $this->class_hashed, 'object_id' => $this->object_id])->count();
 
-        $expression = new Expression("CASE WHEN parent_id = 0 THEN id ELSE parent_id END AS sort");
-
-        $this->comments = Comment::find()->addSelect(["*", $expression])->where([
-            'class' => $this->classname,
+        return $this->renderFile('@vendor/floor12/yii2-comments/views/widget.php', [
+            'total' => $total,
+            'btn_class' => $this->btn_class,
             'object_id' => $this->object_id,
-        ])->orderBy("sort, created")->all();
-
-
-        $commentsRender = Null;
-        if ($this->comments) {
-            foreach ($this->comments as $comment)
-                $commentsRender .= $this->renderFile('@vendor/floor12/yii2-comments/views/_comment.php', ['model' => $comment]);
-            return $this->renderFile('@vendor/floor12/yii2-comments/views/comments.php', ['comments' => $commentsRender]);
-        }
+            'selector' => $this->selector,
+            'show' => $this->show,
+            'class_hashed' => $this->class_hashed
+        ]);
 
 
     }

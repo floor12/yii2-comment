@@ -11,10 +11,9 @@
 
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
-use backend\components\Summernote;
 
 $form = ActiveForm::begin([
-    'options' => ['class' => 'ajax-form'],
+    'options' => ['class' => 'modaledit-form'],
     'enableClientValidation' => true
 ]);
 
@@ -27,13 +26,13 @@ echo $form->errorSummary($model);
 
 ?>
 
-<?= $form->field($model, 'content')->label(false)->widget(Summernote::className(), []); ?>
+<?= $form->field($model, 'content')->label(false)->textarea(['placeholder'=>'Текст комментария']) ?>
 
 <?= $form->field($model, 'object_id')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'class')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'parent_id')->hiddenInput()->label(false) ?>
 <div class="modal-footer">
-    <?= Html::a('Отмена', '', ['class' => 'btn btn-default disable']) ?>
+    <?= Html::a('Отмена', '', ['class' => 'btn btn-default modaledit-disable']) ?>
     <?= Html::submitButton($model->isNewRecord ? 'Добавить' : 'Сохранить', ['class' => 'btn btn-success']) ?>
 </div>
 

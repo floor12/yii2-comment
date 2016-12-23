@@ -4,6 +4,7 @@ namespace floor12\comments;
 
 use Yii;
 use yii\db\ActiveRecord;
+use common\models\User;
 use backend\components\UserBehavior;
 
 /**
@@ -24,32 +25,17 @@ use backend\components\UserBehavior;
 class Comment extends ActiveRecord
 {
 
-    /**
-     * Общее количество комментов
-     *
-     * @param $classname string
-     * @param $object_id integer
-     * @return integer
-     */
-
-    public static function total($classname, $object_id, $sub = false)
+    public static function prepereClassname($classname)
     {
-        $classname = str_replace("\\", "\\\\", $classname);
-        $res = Yii::$app->db->createCommand("SELECT count(id) as count FROM comment WHERE `status`=0 AND parent_id=0 AND `object_id`='{$object_id}' AND `class`='{$classname}' ")->queryOne();
-        return $res['count'];
+        return strtolower(str_replace("\\", "_", $classname));
     }
 
-    /**
-     * Получаем дочерние коменты
-     *
-     * @return Comment[]
-     *
-     **/
 
-
-    public function getChildren()
+    public function canUpdate($user_id)
     {
-        return self::find()->where("status=0 AND parent_id='{$this->id}'")->orderBy('created ASC')->all();
+        if ($this->create_user_id == $user_id)
+            return true;
+        return false;
     }
 
 
@@ -85,17 +71,6 @@ class Comment extends ActiveRecord
             [['created', 'updated', 'create_user_id', 'update_user_id', 'object_id', 'parent_id', 'status'], 'integer'],
             [['content'], 'string'],
         ];
-    }
-
-    /**
-     * Количество лайков
-     *
-     * @return integer
-     */
-
-    public function getLikes()
-    {
-        return Like::total($this->className(), $this->id);
     }
 
 

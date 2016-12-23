@@ -9,14 +9,12 @@
 namespace floor12\comments;
 
 
-use backend\logic\comment\CommentUpdate;
-use common\models\Comment;
-use common\models\Post;
-use backend\components\CommentsWidget;
 use yii\web\Controller;
 use yii\filters\AccessControl;
-use yii\web\ForbiddenHttpException;
 use backend\components\UserBehavior;
+use yii\web\ForbiddenHttpException;
+use yii\db\Expression;
+use \Yii;
 
 
 class CommentController extends Controller
@@ -39,53 +37,61 @@ class CommentController extends Controller
         ];
     }
 
-    public function actionIndex($id, $model)
+    public function actionIndex($object_id, $classname)
     {
+        $expression = new Expression("CASE WHEN parent_id = 0 THEN id ELSE parent_id END AS sort");
 
-        $classname = 'common\\models\\' . ucfirst($model);
+        $comments = Comment::find()->addSelect(["*", $expression])->where([
+            'class' => $classname,
+            'object_id' => $object_id,
+        ])->orderBy("sort, created")->all();
 
-//        if (($model == 'post') && !\Yii::$app->user->can('commentCreate', ['post' => Post::findOne($id)]))
-//            throw new ForbiddenHttpException("Read this comments is not permitted");
 
-        return CommentsWidget::widget(['classname' => $classname, 'object_id' => $id]);
+        $commentsRender = Null;
+        if ($comments) {
+            foreach ($comments as $comment)
+                $commentsRender .= $this->renderFile('@vendor/floor12/yii2-comments/views/_comment.php', ['model' => $comment]);
+            return $this->renderFile('@vendor/floor12/yii2-comments/views/comments.php', ['comments' => $commentsRender]);
+        }
+
+
     }
 
-    public function actionForm($component = NULL, $object_id = 0, $parent = 0, $id = 0)
+    public function actionForm($classname = NULL, $object_id = 0, $parent = 0, $id = 0)
     {
 
         if ($id) {
             $model = Comment::findOne($id);
-//            if (($model->class == 'common\models\Post') && !\Yii::$app->user->can('commentUpdate', ['comment' => $model]))
-//                throw new ForbiddenHttpException("Update this comment is not permitted");
+            if (!$model->canUpdate(Yii::$app->user->id) && !Yii::$app->user->can('admin'))
+                throw new ForbiddenHttpException("Update this comment is not permitted");
+
         } else {
             $model = new Comment();
+            $model->parent_id = $parent;
+            if ($model->parent_id) {
+                $model->object_id = $model->parent->object_id;
+                $model->class = $model->parent->class;
+            } else {
+                $model->class = $classname;
+                $model->object_id = $object_id;
+            }
+        }
 
 //            if (($component == 'post') && !\Yii::$app->user->can('commentCreate', ['post' => Post::findOne($object_id)]))
 //                throw new ForbiddenHttpException("Comment this post is not permitted");
 
-            if ($model)
-                $model->class = "common\\models\\" . ucwords($component);
-            $model->object_id = $object_id;
-            $model->parent_id = $parent;
-        }
 
-
-        if (\Yii::$app->request->post('Comment') && \Yii::createObject(CommentUpdate::class, [
-                $model,
-                \Yii::$app->request->post('Comment'),
-                \Yii::$app->user->identity])->execute()
-        ) {
-            if (!$component)
-                $component = strtolower((new \ReflectionClass($model->class))->getShortName());
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return "
             <script>
                 info('Комментарий успешно сохранен',1);
                 hideFormModal();
-                comments({$model->object_id},'{$component}')
+                commentBlock = $('#{$model->class}-{$model->object_id}');
+                showComments(commentBlock)
             </script>";
         }
 
-        return $this->renderAjax('_form', ['model' => $model]);
+        return $this->renderAjax('@vendor/floor12/yii2-comments/views/_form.php', ['model' => $model]);
     }
 
     public function actionDelete()
@@ -94,10 +100,11 @@ class CommentController extends Controller
         if (!$id)
             throw new BadRequestHttpException;
         $model = Comment::findOne($id);
-//        if (!\Yii::$app->user->can('commentDelete', ['comment' => $model]))
-//            throw new ForbiddenHttpException("Forbidden to delete this comment.");
+        if (!$model->canUpdate(Yii::$app->user->id) && !Yii::$app->user->can('admin'))
+            throw new ForbiddenHttpException("Delete this comment is not permitted");
         if (!$model)
             throw new NotFoundHttpException;
         $model->delete();
+        return "#{$model->class}-{$model->object_id}";
     }
 }

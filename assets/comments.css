@@ -1,0 +1,35 @@
+div.comments-widget div.comments-header {
+  padding: 2px 0; }
+div.comments-widget div.comments-comments {
+  display: none; }
+  div.comments-widget div.comments-comments div.subcomment {
+    margin-left: 50px;
+    margin-top: 2px !important; }
+  div.comments-widget div.comments-comments div.comment {
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin-top: 20px; }
+    div.comments-widget div.comments-comments div.comment div.comment-body {
+      min-height: 45px; }
+      div.comments-widget div.comments-comments div.comment div.comment-body img.avatar {
+        max-width: 40px;
+        float: left; }
+      div.comments-widget div.comments-comments div.comment div.comment-body div.comment-date {
+        font-size: 80%;
+        float: right;
+        color: #ccc; }
+      div.comments-widget div.comments-comments div.comment div.comment-body div.comment-author {
+        font-weight: bold;
+        margin-left: 50px; }
+      div.comments-widget div.comments-comments div.comment div.comment-body div.comment-content {
+        font-size: 90%;
+        margin-left: 50px; }
+    div.comments-widget div.comments-comments div.comment div.comment-control {
+      height: 15px;
+      text-align: right;
+      opacity: 0;
+      transition: all 0.2s ease-out 0s; }
+  div.comments-widget div.comments-comments div.comment:hover div.comment-control {
+    opacity: 1; }
+
+/*# sourceMappingURL=comments.css.map */
