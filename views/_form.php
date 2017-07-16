@@ -33,7 +33,7 @@ echo $form->errorSummary($model);
 <?= $form->field($model, 'parent_id')->hiddenInput()->label(false) ?>
 <div class="modal-footer">
     <?= Html::a('Отмена', '', ['class' => 'btn btn-default modaledit-disable']) ?>
-    <?= Html::submitButton($model->isNewRecord ? 'Добавить' : 'Сохранить', ['class' => 'btn btn-success']) ?>
+    <?= Html::submitButton($model->isNewRecord ? 'Добавить' : 'Сохранить', ['class' => 'btn btn-primary']) ?>
 </div>
 
 <?php ActiveForm::end(); ?>
