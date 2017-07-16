@@ -23,7 +23,8 @@
     "bower-asset/cropper": "*",
     "rmrevin/yii2-fontawesome": "~2.15",
     "floor12/yii2-behavior-default": "dev-master",
-    "floor12/yii2-editmodal": "dev-master"
+    "floor12/yii2-editmodal": "dev-master",
+    "marqu3s/yii2-summernote": "dev-master"
   },
   "repositories": [
     {

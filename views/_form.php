@@ -26,7 +26,7 @@ echo $form->errorSummary($model);
 
 ?>
 
-<?= $form->field($model, 'content')->label(false)->textarea(['placeholder'=>'Текст комментария']) ?>
+<?= $form->field($model, 'content')->label(false)->widget(\marqu3s\summernote\Summernote::className(), []) ?>
 
 <?= $form->field($model, 'object_id')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'class')->hiddenInput()->label(false) ?>
