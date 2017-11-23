@@ -78,6 +78,22 @@ class Comment extends ActiveRecord
     {
         return [
             'user' => \floor12\defaultbehavior\DefaultBehavior::className(),
+            'images' => [
+                'class' => \floor12\superfile\SuperfileBehavior::className(),
+                'fields' => [
+                    'files' => [
+                        'title' => 'Файлы',
+                        'preview' => false,
+                        'multiply' => true,
+                        'bricked' => true,
+                        'showName' => true,
+                        'showControl' => true,
+                        'label' => false,
+                        'successFunction' => 'info("Файл загружен",1);',
+                        'errorFunction' => 'info(message,2);',
+                    ],
+                ]
+            ]
         ];
     }
 

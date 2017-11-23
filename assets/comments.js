@@ -3,6 +3,11 @@
  */
 
 
+$(document).on('click', 'a.open-superfile', function (event) {
+    obj = $(event.target);
+    window.open("/superfile/get?hash=" + obj.data('hash'), '_blank');
+})
+
 $(document).on('click', 'a.comments-create', function () {
     object_id = $(this).data('object_id');
     classname = $(this).data('class');

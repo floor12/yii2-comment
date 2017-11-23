@@ -17,8 +17,19 @@ use rmrevin\yii\fontawesome\FontAwesome;
         <img src="<?= $model->user->avatar ?>" class="avatar">
         <div class="comment-date"><?= \Yii::$app->formatter->asDatetime($model->created) ?></div>
         <div class="comment-author"><?= $model->user->fullname ?></div>
-        <div class="comment-content"><?= $model->content; ?></div>
-    </div>
+        <div class="comment-content">
+            <?= $model->content; ?>
+
+            <?php if ($model->superfiles['files']): ?>
+            <h3>Файлы</h3>
+            <div class="list-object-superfiles" style="float: none; margin: 0">
+                <?php foreach ($model->superfiles['files'] as $file) { ?>
+                    <li><a class="open-superfile" data-hash="<?= $file->hash ?>"><?= $file->title ?></a></li>
+                <?php } ?>
+                </ul>
+                <?php endif; ?>
+            </div>
+        </div>
 
     <div class="comment-control">
         <?= Html::a(FontAwesome::icon('reply') . "Ответить", null, ['onclick' => "showForm('comment/form',{parent: {$model->id}})", 'class' => 'btn btn-xs btn-default']) ?>
