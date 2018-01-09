@@ -70,6 +70,7 @@ class Comment extends ActiveRecord
             [['content'], 'required', 'message' => 'Нельзя сохранить пустой комментарий.'],
             [['created', 'updated', 'create_user_id', 'update_user_id', 'object_id', 'parent_id', 'status'], 'integer'],
             [['content'], 'string'],
+            ['files', 'file', 'maxFiles' => 10],
         ];
     }
 
@@ -78,21 +79,9 @@ class Comment extends ActiveRecord
     {
         return [
             'user' => \floor12\defaultbehavior\DefaultBehavior::className(),
-            'images' => [
-                'class' => \floor12\superfile\SuperfileBehavior::className(),
-                'fields' => [
-                    'files' => [
-                        'title' => 'Файлы',
-                        'preview' => false,
-                        'multiply' => true,
-                        'bricked' => true,
-                        'showName' => true,
-                        'showControl' => true,
-                        'label' => false,
-                        'successFunction' => 'info("Файл загружен",1);',
-                        'errorFunction' => 'info(message,2);',
-                    ],
-                ]
+            'files' => [
+                'class' => \floor12\files\components\FileBehaviour::className(),
+                'attributes' => ['files']
             ]
         ];
     }
@@ -113,6 +102,7 @@ class Comment extends ActiveRecord
             'parent_id' => Yii::t('app', 'Parent ID'),
             'status' => Yii::t('app', 'Status'),
             'content' => Yii::t('app', 'Content'),
+            'files' => 'Файлы',
         ];
     }
 

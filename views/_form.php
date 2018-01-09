@@ -28,7 +28,7 @@ echo $form->errorSummary($model);
 
 <?= $form->field($model, 'content')->label(false)->widget(\marqu3s\summernote\Summernote::className(), []) ?>
 
-<?= $model->fileform('files') ?>
+<?= $form->field($model, 'files')->widget(\floor12\files\components\FileInputWidget::className()) ?>
 
 <?= $form->field($model, 'object_id')->hiddenInput()->label(false) ?>
 <?= $form->field($model, 'class')->hiddenInput()->label(false) ?>
