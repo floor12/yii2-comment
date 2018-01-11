@@ -20,7 +20,7 @@ use rmrevin\yii\fontawesome\FontAwesome;
         <div class="comment-content">
             <?= $model->content; ?>
 
-            <?= \floor12\files\components\FilesBlock::widget(['files' => $model->files, 'title' => 'Приложенные файлы:']) ?>
+            <?= \floor12\files\components\FilesBlock::widget(['files' => $model->files, 'title' => 'Файлы:', 'downloadAll' => true, 'zipTitle' => "comment_" . $model->id]) ?>
         </div>
 
         <div class="comment-control">
