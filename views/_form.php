@@ -5,7 +5,7 @@
  * Date: 11.11.2016
  * Time: 20:25
  *
- * @var \common\models\Position $model
+ * @var \floor12\comments\Comment $model
  *
  */
 
@@ -17,22 +17,22 @@ $form = ActiveForm::begin([
     'enableClientValidation' => true
 ]);
 
-echo "<h2>";
-echo $model->isNewRecord ? "Добавление комментария" : "Редактирование комментария";
-echo "</h2>";
-
-echo $form->errorSummary($model);
-
 
 ?>
 
-<?= $form->field($model, 'content')->label(false)->widget(\marqu3s\summernote\Summernote::className(), []) ?>
+<div class="modal-header">
+    <h2><?= $model->isNewRecord ? "Добавление комментария" : "Редактирование комментария"; ?></h2>
+</div>
 
-<?= $form->field($model, 'files')->widget(\floor12\files\components\FileInputWidget::className()) ?>
+<div class="modal-body">
+    <?= $form->errorSummary($model); ?>
+    <?= $form->field($model, 'content')->label(false)->widget(\marqu3s\summernote\Summernote::className(), []) ?>
+    <?= $form->field($model, 'files')->widget(\floor12\files\components\FileInputWidget::className()) ?>
+    <?= $form->field($model, 'object_id')->hiddenInput()->label(false) ?>
+    <?= $form->field($model, 'class')->hiddenInput()->label(false) ?>
+    <?= $form->field($model, 'parent_id')->hiddenInput()->label(false) ?>
+</div>
 
-<?= $form->field($model, 'object_id')->hiddenInput()->label(false) ?>
-<?= $form->field($model, 'class')->hiddenInput()->label(false) ?>
-<?= $form->field($model, 'parent_id')->hiddenInput()->label(false) ?>
 <div class="modal-footer">
     <?= Html::a('Отмена', '', ['class' => 'btn btn-default modaledit-disable']) ?>
     <?= Html::submitButton($model->isNewRecord ? 'Добавить' : 'Сохранить', ['class' => 'btn btn-primary']) ?>
