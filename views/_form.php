@@ -12,6 +12,10 @@
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 
+$editorClass = \marqu3s\summernote\Summernote::className();
+if (isset(\Yii::$app->params['editorClass']))
+    $editorClass = \Yii::$app->params['editorClass'];
+
 $form = ActiveForm::begin([
     'options' => ['class' => 'modaledit-form'],
     'enableClientValidation' => true
@@ -26,7 +30,7 @@ $form = ActiveForm::begin([
 
 <div class="modal-body">
     <?= $form->errorSummary($model); ?>
-    <?= $form->field($model, 'content')->label(false)->widget(\marqu3s\summernote\Summernote::className(), []) ?>
+    <?= $form->field($model, 'content')->label(false)->widget($editorClass, []) ?>
     <?= $form->field($model, 'files')->widget(\floor12\files\components\FileInputWidget::className()) ?>
     <?= $form->field($model, 'object_id')->hiddenInput()->label(false) ?>
     <?= $form->field($model, 'class')->hiddenInput()->label(false) ?>
