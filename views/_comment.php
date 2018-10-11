@@ -14,7 +14,7 @@ use rmrevin\yii\fontawesome\FontAwesome;
 <div data-key="<?= $model->id ?>" class="comment <?php if ($model->parent_id) echo "subcomment"; ?>">
 
     <div class="comment-body">
-        <img src="<?= $model->user->avatara ?>" class="avatar">
+        <img src="<?= $model->user->userpic ?>" class="avatar">
         <div class="comment-date"><?= \Yii::$app->formatter->asDatetime($model->created) ?></div>
         <div class="comment-author"><?= $model->user->fullname ?></div>
         <div class="comment-content">
