@@ -44,7 +44,7 @@ class CommentController extends Controller
         $comments = Comment::find()->addSelect(["*", $expression])->where([
             'class' => $classname,
             'object_id' => $object_id,
-        ])->orderBy("sort, created")->all();
+        ])->orderBy("sort DESC , created ASC")->all();
 
 
         $commentsRender = Null;
