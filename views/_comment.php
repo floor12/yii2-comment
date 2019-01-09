@@ -10,6 +10,9 @@
 use yii\helpers\Html;
 use rmrevin\yii\fontawesome\FontAwesome;
 
+$parent_id = $model->id;
+if ($model->parent_id)
+    $parent_id = $model->parent_id;
 ?>
 <div data-key="<?= $model->id ?>" class="comment <?php if ($model->parent_id) echo "subcomment"; ?>">
 
@@ -24,7 +27,7 @@ use rmrevin\yii\fontawesome\FontAwesome;
         </div>
 
         <div class="comment-control">
-            <?= Html::a(FontAwesome::icon('reply') . "Ответить", null, ['onclick' => "showForm('comment/form',{parent: {$model->id}})", 'class' => 'btn btn-xs btn-default']) ?>
+            <?= Html::a(FontAwesome::icon('reply') . "Ответить", null, ['onclick' => "showForm('comment/form',{parent: {$parent_id}})", 'class' => 'btn btn-xs btn-default']) ?>
             <?php if ($model->canUpdate(Yii::$app->user->id) || !Yii::$app->user->can('admin')): ?>
                 <?= Html::a(FontAwesome::icon('pencil') . "Редактировать", null, ['onclick' => "showForm('comment/form',{$model->id})", 'class' => 'btn btn-xs btn-default']) ?>
                 <?= Html::a(FontAwesome::icon('trash') . "Удалить", null, ['onclick' => "deleteComment({$model->id})", 'class' => 'btn btn-xs btn-default']) ?>
